@@ -1,3 +1,6 @@
 [submodule "sdk/adaptivepayments-sdk"]
 	path = sdk/adaptivepayments-sdk
 	url = https://github.com/paypal/adaptivepayments-sdk-java.git
+[submodule "sdk/sdk-core-java"]
+	path = sdk/sdk-core-java
+	url = https://github.com/paypal/sdk-core-java
