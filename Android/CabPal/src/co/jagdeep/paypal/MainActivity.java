@@ -21,12 +21,12 @@ public class MainActivity extends Activity {
     // set to PaymentActivity.ENVIRONMENT_PRODUCTION to move real money.
     // set to PaymentActivity.ENVIRONMENT_SANDBOX to use your test credentials from https://developer.paypal.com
     // set to PaymentActivity.ENVIRONMENT_NO_NETWORK to kick the tires without communicating to PayPal's servers.
-    private static final String CONFIG_ENVIRONMENT = PaymentActivity.ENVIRONMENT_NO_NETWORK;
+    private static final String CONFIG_ENVIRONMENT = PaymentActivity.ENVIRONMENT_SANDBOX;
     
     // note that these credentials will differ between live & sandbox environments.
-    private static final String CONFIG_CLIENT_ID = "credential from developer.paypal.com";
+    private static final String CONFIG_CLIENT_ID = "AfJXcRBHLgsIEJl81hYCaDMD9_7vW1Tuyc1VRRjrT9VENEdTEgru-qYZhMip";
     // when testing in sandbox, this is likely the -facilitator email address. 
-    private static final String CONFIG_RECEIVER_EMAIL = "matching paypal email address"; 
+    private static final String CONFIG_RECEIVER_EMAIL = "kenorb-facilitator@googlemail.com"; 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
