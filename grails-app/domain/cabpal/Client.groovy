@@ -9,6 +9,6 @@ class Client {
     static constraints = {
         firstname nullable: false, blank: false, unique: false
         lastname nullable: true, blank: true, unique: false
-        phone nullable: false, blank: false, unique: false
+        phone nullable: false, blank: false, unique: false, matches:"[0-9]"
     }
 }
