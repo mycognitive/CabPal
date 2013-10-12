@@ -78,6 +78,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="CabPal-grailsPlugins" />
+    <orderEntry type="library" name="twilio-java-sdk-3.4.0-jar-with-dependencies" level="project" />
   </component>
 </module>
 
