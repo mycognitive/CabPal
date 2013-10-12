@@ -2,6 +2,7 @@ package co.jagdeep.cabpal;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,7 +25,13 @@ public class MainActivity extends Activity {
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
     	// TODO Auto-generated method stub
-    	return super.onMenuItemSelected(featureId, item);
+        switch (item.getItemId()) {
+        case R.id.action_settings:
+        	Intent intent = new Intent(this, SettingsActivity.class);
+        	startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     
 }
