@@ -4,3 +4,6 @@
 [submodule "sdk/sdk-core-java"]
 	path = sdk/sdk-core-java
 	url = https://github.com/paypal/sdk-core-java
+[submodule "sdk/PayPal-Android-SDK"]
+	path = sdk/PayPal-Android-SDK
+	url = https://github.com/paypal/PayPal-Android-SDK.git
