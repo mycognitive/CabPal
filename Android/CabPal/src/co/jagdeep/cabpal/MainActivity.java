@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
+// import co.jagdeep.paypal.PayPal;
+
 public class MainActivity extends Activity {
 	ImageButton imageButton;
+	ImageButton imageButton2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,21 @@ public class MainActivity extends Activity {
 			}
 
 		});
+		
+		// PayPal image button
+		imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
+
+		imageButton2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				imageButton2.setImageResource(R.drawable.ic_launcher2); 
+
+			}
+
+		});
+
 
 	}
 
