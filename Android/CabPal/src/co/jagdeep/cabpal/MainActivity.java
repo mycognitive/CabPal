@@ -26,7 +26,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -154,10 +156,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 
-				
 				payButton();
 				// imageButton2.setImageResource(R.drawable.ic_launcher2);
-
 			}
 
 		});
@@ -295,7 +295,24 @@ public class MainActivity extends Activity {
 	            try {
 	                Log.i("paymentExample", confirm.toJSONObject().toString(4));
 
+	                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+	                
+	                
+	                dlgAlert.setMessage("Payment Complete");
+	                dlgAlert.setTitle("PayPal");
+	                dlgAlert.setCancelable(true);
+	                
+	                dlgAlert.setPositiveButton("Ok",
+	                	    new DialogInterface.OnClickListener() {
+	                	        public void onClick(DialogInterface dialog, int which) {
+	                	           
+	                	        }
+	                	    });
+	                
+	                dlgAlert.show();
+	                
 	                this.imageButton2.setVisibility(View.INVISIBLE);
+	                this.button1.setVisibility(View.INVISIBLE);
 	                // TODO: send 'confirm' to your server for verification.
 	                // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
 	                // for more details.
