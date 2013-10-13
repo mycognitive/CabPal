@@ -36,12 +36,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class MainActivity extends Activity {
 	ImageButton imageButton;
 	ImageButton imageButton2;
+	Button button1;
 	SharedPreferences sp;
 
 	MainActivity obj;
@@ -119,6 +122,8 @@ public class MainActivity extends Activity {
 	public void addListenerOnButton() {
 
 		imageButton = (ImageButton) findViewById(R.id.imageButton1);
+		
+		button1 = (Button) findViewById(R.id.button1);
 
 		imageButton.setOnClickListener(new OnClickListener() {
 
@@ -136,7 +141,7 @@ public class MainActivity extends Activity {
 				}.start();
 
 				imageButton.setImageResource(R.drawable.ic_launcher2);
-
+				imageButton.setEnabled(false);
 			}
 
 		});
@@ -152,6 +157,17 @@ public class MainActivity extends Activity {
 				
 				payButton();
 				// imageButton2.setImageResource(R.drawable.ic_launcher2);
+
+			}
+
+		});
+		
+		button1.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				imageButton2.setVisibility(View.INVISIBLE);
 
 			}
 
@@ -218,7 +234,7 @@ public class MainActivity extends Activity {
 				+ dt.getDay() + "&createdTime_month=" + dt.getMonth()
 				+ "&createdTime_year=" + dt.getYear()
 				+ "&_isConfirmed=&estimatedTime=0&cost=0&_isComplete=&phone="
-				+ sp.getString("example_phone", "12345")
+				+ sp.getString("example_phone", "447804729132")
 				+ "&company.id=1&create=Create";
 
 		// Send post request
@@ -279,6 +295,7 @@ public class MainActivity extends Activity {
 	            try {
 	                Log.i("paymentExample", confirm.toJSONObject().toString(4));
 
+	                this.imageButton2.setVisibility(View.INVISIBLE);
 	                // TODO: send 'confirm' to your server for verification.
 	                // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
 	                // for more details.
