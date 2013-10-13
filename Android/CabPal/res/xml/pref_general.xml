@@ -23,7 +23,7 @@
         android:singleLine="true"
         android:title="@string/pref_title_display_homeAddress" />
 
-    <!-- Address -->
+    <!-- travel to -->
     <EditTextPreference
         android:capitalize="words"
         android:defaultValue="@string/pref_default_display_travelTo"
@@ -33,6 +33,17 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/pref_title_display_travelTo" />
+    
+    <!-- phone number -->
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_display_phoneNumber"
+        android:inputType="textCapWords"
+        android:key="example_phoneNumber"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_display_phoneNumber" />
 
     <!--
          NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to

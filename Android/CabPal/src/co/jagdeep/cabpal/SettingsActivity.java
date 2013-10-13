@@ -72,6 +72,7 @@ public class SettingsActivity extends PreferenceActivity {
 		bindPreferenceSummaryToValue(findPreference("example_list"));
 		bindPreferenceSummaryToValue(findPreference("example_homeAddress"));
 		bindPreferenceSummaryToValue(findPreference("example_travelTo"));
+		bindPreferenceSummaryToValue(findPreference("example_phoneNumber"));
 		
 	}
 
@@ -182,6 +183,7 @@ public class SettingsActivity extends PreferenceActivity {
 			bindPreferenceSummaryToValue(findPreference("example_list"));
 			bindPreferenceSummaryToValue(findPreference("example_homeAddress"));
 			bindPreferenceSummaryToValue(findPreference("example_travelTo"));
+			bindPreferenceSummaryToValue(findPreference("example_phoneNumber"));
 		}
 	}
 

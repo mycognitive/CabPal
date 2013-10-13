@@ -28,4 +28,7 @@
     
     <string name="pref_title_display_travelTo">Travel To</string>
     <string name="pref_default_display_travelTo">32 Dustbin lane, Batman, B12 3AY</string>
+    
+    <string name="pref_title_display_phoneNumber">Phone Number</string>
+    <string name="pref_default_display_phoneNumber">07575757575</string>
 </resources>
