@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class MainActivity extends Activity {
 	ImageButton imageButton;
+	ImageButton imageButton2;
 	SharedPreferences sp;
 
     public static final String EXTRA_MESSAGE = "message";
@@ -152,6 +153,21 @@ public class MainActivity extends Activity {
 			}
 
 		});
+		
+		// PayPal image button
+		imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
+
+		imageButton2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				imageButton2.setImageResource(R.drawable.ic_launcher2); 
+
+			}
+
+		});
+
 
 	}
 

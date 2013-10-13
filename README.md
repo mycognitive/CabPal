@@ -1,16 +1,14 @@
-FastCab
+CabPal
 =======
 
 Fast Cab Battle Hack app
 
 =======
 
-Hello, we are creating an app to allow anyone to book a cab.
+An app which allows anyone to book a cab anytime and anywhere.
 
-We will using twilio api to make the voice call to the taxi company for you,
-and get the confirmation back to you.
-
-While you wait you can either pay in advance or after the journey using paypal.
+We are using Twilio API to make the voice call to the taxi company for you,
+and get the confirmation back to you, so you can easily pay by PayPal.
 
 =======
 
