@@ -123,9 +123,9 @@ public class WriteXMLFile {
         this.customerName = customerName;
         this.say = "Hello, This is an automated taxi booking service, " +
                 //""
-                " My client " + this.customerName + ", whose contact number is " + this.fromNumber +
+                " Our client " + this.customerName + ", whose contact number is " + this.fromNumber +
                 " would like to book a taxi as soon as possible! from " + this.fromLocation +
-                " to " + this.toLocation
+                " wants to go to the destination: " + this.toLocation
     }
 
     public void createXML() {
@@ -144,21 +144,39 @@ public class WriteXMLFile {
             say.setAttribute("voice","alice")
             rootElement.appendChild(say);
 
+
+            Element gather = doc.createElement("Gather");
+            gather.setAttribute("action","https://dl.dropboxusercontent.com/u/60881054/response.xml");
+            gather.setAttribute("method","GET");
+            gather.setAttribute("timeout","10");
+            gather.setAttribute("finishOnKey","#");
+
+            Element newSay = doc.createElement("Say");
+            newSay.appendChild(doc.createTextNode("Using your dialpad, please press one to repeat this message, or press seven to confirm the booking, or press nine to reject this booking, followed by the hash button"))
+            gather.appendChild(newSay);
+
+            rootElement.appendChild(gather)
+
+            println rootElement.toString()
+
+
             TransformerFactory transformerFactory = TransformerFactory
                     .newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
+            Transformer transformer = transformerFactory.newTransformer()
+            DOMSource source = new DOMSource(doc)
             File file = new File("webapps/CabPal-0.1/xml/requestCall.xml")
             println "path: " + file.absolutePath
 
-            StreamResult result = new StreamResult(file);
+
+
+            StreamResult result = new StreamResult(file)
 
             println result.toString()
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
 
-            transformer.transform(source, result);
+            transformer.transform(source, result)
 
             println "File saved!"
 
