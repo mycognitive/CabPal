@@ -15,15 +15,7 @@
 		<g:message code="company.phone.label" default="Phone" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="phone" required="" value="${companyInstance?.phone}"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: companyInstance, field: 'address', 'error')} required">
-	<label for="address">
-		<g:message code="company.address.label" default="Address" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="address" name="address.id" from="${cabpal.Address.list()}" optionKey="id" required="" value="${companyInstance?.address?.id}" class="many-to-one"/>
+	<g:textField name="phone" pattern="${companyInstance.constraints.phone.matches}" required="" value="${companyInstance?.phone}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: companyInstance, field: 'email', 'error')} required">
@@ -32,5 +24,22 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<g:field type="email" name="email" required="" value="${companyInstance?.email}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: companyInstance, field: 'bookings', 'error')} ">
+	<label for="bookings">
+		<g:message code="company.bookings.label" default="Bookings" />
+		
+	</label>
+	
+<ul class="one-to-many">
+<g:each in="${companyInstance?.bookings?}" var="b">
+    <li><g:link controller="booking" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></li>
+</g:each>
+<li class="add">
+<g:link controller="booking" action="create" params="['company.id': companyInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'booking.label', default: 'Booking')])}</g:link>
+</li>
+</ul>
+
 </div>
 

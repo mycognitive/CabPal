@@ -28,8 +28,6 @@
 					
 						<g:sortableColumn property="phone" title="${message(code: 'company.phone.label', default: 'Phone')}" />
 					
-						<th><g:message code="company.address.label" default="Address" /></th>
-					
 						<g:sortableColumn property="email" title="${message(code: 'company.email.label', default: 'Email')}" />
 					
 					</tr>
@@ -41,8 +39,6 @@
 						<td><g:link action="show" id="${companyInstance.id}">${fieldValue(bean: companyInstance, field: "name")}</g:link></td>
 					
 						<td>${fieldValue(bean: companyInstance, field: "phone")}</td>
-					
-						<td>${fieldValue(bean: companyInstance, field: "address")}</td>
 					
 						<td>${fieldValue(bean: companyInstance, field: "email")}</td>
 					

@@ -8,7 +8,15 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class BookingController {
 
+    def bookingService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+     def bookTaxi()
+     {
+         bookingService.clientBooking(params)
+         render "bookTaxi Service method"
+     }
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -44,6 +52,8 @@ class BookingController {
             }
             '*' { respond bookingInstance, [status: CREATED] }
         }
+
+        bookingService.clientBooking(bookingInstance)
     }
 
     def edit(Booking bookingInstance) {

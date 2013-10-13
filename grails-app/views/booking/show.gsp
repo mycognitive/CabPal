@@ -23,20 +23,29 @@
 			</g:if>
 			<ol class="property-list booking">
 			
-				<g:if test="${bookingInstance?.source}">
+				<g:if test="${bookingInstance?.sourceAddress}">
 				<li class="fieldcontain">
-					<span id="source-label" class="property-label"><g:message code="booking.source.label" default="Source" /></span>
+					<span id="sourceAddress-label" class="property-label"><g:message code="booking.sourceAddress.label" default="Source Address" /></span>
 					
-						<span class="property-value" aria-labelledby="source-label"><g:link controller="address" action="show" id="${bookingInstance?.source?.id}">${bookingInstance?.source?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="sourceAddress-label"><g:fieldValue bean="${bookingInstance}" field="sourceAddress"/></span>
 					
 				</li>
 				</g:if>
 			
-				<g:if test="${bookingInstance?.destination}">
+				<g:if test="${bookingInstance?.destinationAddress}">
 				<li class="fieldcontain">
-					<span id="destination-label" class="property-label"><g:message code="booking.destination.label" default="Destination" /></span>
+					<span id="destinationAddress-label" class="property-label"><g:message code="booking.destinationAddress.label" default="Destination Address" /></span>
 					
-						<span class="property-value" aria-labelledby="destination-label"><g:link controller="address" action="show" id="${bookingInstance?.destination?.id}">${bookingInstance?.destination?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="destinationAddress-label"><g:fieldValue bean="${bookingInstance}" field="destinationAddress"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${bookingInstance?.clientName}">
+				<li class="fieldcontain">
+					<span id="clientName-label" class="property-label"><g:message code="booking.clientName.label" default="Client Name" /></span>
+					
+						<span class="property-value" aria-labelledby="clientName-label"><g:fieldValue bean="${bookingInstance}" field="clientName"/></span>
 					
 				</li>
 				</g:if>
@@ -59,11 +68,47 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${bookingInstance?.client}">
+				<g:if test="${bookingInstance?.isConfirmed}">
 				<li class="fieldcontain">
-					<span id="client-label" class="property-label"><g:message code="booking.client.label" default="Client" /></span>
+					<span id="isConfirmed-label" class="property-label"><g:message code="booking.isConfirmed.label" default="Is Confirmed" /></span>
 					
-						<span class="property-value" aria-labelledby="client-label"><g:link controller="client" action="show" id="${bookingInstance?.client?.id}">${bookingInstance?.client?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="isConfirmed-label"><g:formatBoolean boolean="${bookingInstance?.isConfirmed}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${bookingInstance?.estimatedTime}">
+				<li class="fieldcontain">
+					<span id="estimatedTime-label" class="property-label"><g:message code="booking.estimatedTime.label" default="Estimated Time" /></span>
+					
+						<span class="property-value" aria-labelledby="estimatedTime-label"><g:fieldValue bean="${bookingInstance}" field="estimatedTime"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${bookingInstance?.cost}">
+				<li class="fieldcontain">
+					<span id="cost-label" class="property-label"><g:message code="booking.cost.label" default="Cost" /></span>
+					
+						<span class="property-value" aria-labelledby="cost-label"><g:fieldValue bean="${bookingInstance}" field="cost"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${bookingInstance?.isComplete}">
+				<li class="fieldcontain">
+					<span id="isComplete-label" class="property-label"><g:message code="booking.isComplete.label" default="Is Complete" /></span>
+					
+						<span class="property-value" aria-labelledby="isComplete-label"><g:formatBoolean boolean="${bookingInstance?.isComplete}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${bookingInstance?.phone}">
+				<li class="fieldcontain">
+					<span id="phone-label" class="property-label"><g:message code="booking.phone.label" default="Phone" /></span>
+					
+						<span class="property-value" aria-labelledby="phone-label"><g:fieldValue bean="${bookingInstance}" field="phone"/></span>
 					
 				</li>
 				</g:if>
