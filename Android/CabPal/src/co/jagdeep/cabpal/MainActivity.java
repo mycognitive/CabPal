@@ -2,7 +2,9 @@ package co.jagdeep.cabpal;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -10,10 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import org.json.JSONException;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
+
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,6 +29,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,76 +44,58 @@ public class MainActivity extends Activity {
 	ImageButton imageButton2;
 	SharedPreferences sp;
 
-    public static final String EXTRA_MESSAGE = "message";
-    public static final String PROPERTY_REG_ID = "registration_id";
-    private static final String PROPERTY_APP_VERSION = "appVersion";
-	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+	MainActivity obj;
 
-    static final String TAG = "GCMDemo";
+	String SENDER_ID = "237275493492";
 
-    GoogleCloudMessaging gcm;
-    AtomicInteger msgId = new AtomicInteger();
-    String regid;
+	public static final String EXTRA_MESSAGE = "message";
+	public static final String PROPERTY_REG_ID = "registration_id";
 
-    Context context;
-    
+	private static final String CONFIG_CLIENT_ID = "AfJXcRBHLgsIEJl81hYCaDMD9_7vW1Tuyc1VRRjrT9VENEdTEgru-qYZhMip";
+	// when testing in sandbox, this is likely the -facilitator email address.
+	private static final String CONFIG_RECEIVER_EMAIL = "kenorb-facilitator@googlemail.com";
+
+	static final String TAG = "GCMDemo";
+
+	GoogleCloudMessaging gcm;
+	AtomicInteger msgId = new AtomicInteger();
+	String regid;
+
+	Context context;
+
+	Boolean _paypalLibraryInit = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-        context = getApplicationContext();
-		
-		if (checkPlayServices()) {
-			addListenerOnButton();
-			
-			gcm = GoogleCloudMessaging.getInstance(this);
-            regid = getRegistrationId(context);
 
-            if (regid.isEmpty()) {
-                //registerInBackground();
-            }
-            
-	    }
+		context = getApplicationContext();
+		obj = this;
 
+		// if (checkPlayServices()) {
+		addListenerOnButton();
+
+		// gcm = GoogleCloudMessaging.getInstance(this);
+		// regid = getRegistrationId(context);
+
+		// if (regid.isEmpty()) {
+		// //registerInBackground();
+		// }
+
+		// }
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
-	}
-	
-	/**
-	 * Gets the current registration ID for application on GCM service.
-	 * <p>
-	 * If result is empty, the app needs to register.
-	 *
-	 * @return registration ID, or empty string if there is no existing
-	 *         registration ID.
-	 */
-	private String getRegistrationId(Context context) {
-	    final SharedPreferences prefs = getGCMPreferences(context);
-	    String registrationId = prefs.getString(PROPERTY_REG_ID, "");
-	    if (registrationId.isEmpty()) {
-	        Log.i(TAG, "Registration not found.");
-	        return "";
-	    }
-	    // Check if app was updated; if so, it must clear the registration ID
-	    // since the existing regID is not guaranteed to work with the new
-	    // app version.
-	    int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
-	    int currentVersion = 0;//getAppVersion(context);
-	    if (registeredVersion != currentVersion) {
-	        Log.i(TAG, "App version changed.");
-	        return "";
-	    }
-	    return registrationId;
-	}
-	
-	/**
-	 * @return Application's {@code SharedPreferences}.
-	 */
-	private SharedPreferences getGCMPreferences(Context context) {
-	    // This sample app persists the registration ID in shared preferences, but
-	    // how you store the regID in your app is up to you.
-	    return getSharedPreferences(SettingsActivity.class.getSimpleName(),
-	            Context.MODE_PRIVATE);
+		
+		Intent intent = new Intent(obj, PayPalService.class);
+
+		// live: don't put any environment extra
+		// sandbox: use PaymentActivity.ENVIRONMENT_SANDBOX
+		intent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT,
+				PaymentActivity.ENVIRONMENT_SANDBOX);
+
+		intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, CONFIG_CLIENT_ID);
+
+		startService(intent);
 	}
 
 	@Override
@@ -116,7 +107,6 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			Intent intent = new Intent(this, SettingsActivity.class);
@@ -135,25 +125,22 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 
-					
-					new Thread(){
-					public void run()
-					{
+				new Thread() {
+					public void run() {
 						try {
-						sendPost();
+							sendPost();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
-					}.start();
-					
-					imageButton.setImageResource(R.drawable.ic_launcher2);
-				
+				}.start();
+
+				imageButton.setImageResource(R.drawable.ic_launcher2);
 
 			}
 
 		});
-		
+
 		// PayPal image button
 		imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
 
@@ -162,12 +149,13 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 
-				imageButton2.setImageResource(R.drawable.ic_launcher2); 
+				
+				payButton();
+				// imageButton2.setImageResource(R.drawable.ic_launcher2);
 
 			}
 
 		});
-
 
 	}
 
@@ -221,8 +209,8 @@ public class MainActivity extends Activity {
 		Date dt = new Date();
 		String urlParameters = "sourceAddress="
 				+ sp.getString("example_homeAddress", "test")
-				+ "&destinationAddress=" + sp.getString("example_travelTo", "test")
-				+ "&clientName="
+				+ "&destinationAddress="
+				+ sp.getString("example_travelTo", "test") + "&clientName="
 				+ sp.getString("example_text", "test")
 				+ "&journeyTime=date.struct&journeyTime_day=" + dt.getDay()
 				+ "&journeyTime_month=" + dt.getMonth() + "&journeyTime_year="
@@ -260,25 +248,58 @@ public class MainActivity extends Activity {
 
 	}
 	
-	private boolean checkPlayServices() {
-	    int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-	    if (resultCode != ConnectionResult.SUCCESS) {
-	        if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-	            GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-	                    PLAY_SERVICES_RESOLUTION_REQUEST).show();
-	        } else {
-	            Log.i("co.jagdeep.cabpal", "This device is not supported.");
-	            finish();
-	        }
-	        return false;
-	    }
-	    return true;
+	void payButton()
+	{
+		PayPalPayment payment = new PayPalPayment(new BigDecimal("10.00"), "GBP", "101 TAXIS");
+
+	    Intent intent = new Intent(this, PaymentActivity.class);
+
+	    // comment this line out for live or set to PaymentActivity.ENVIRONMENT_SANDBOX for sandbox
+	    intent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT, PaymentActivity.ENVIRONMENT_SANDBOX);
+
+	    // it's important to repeat the clientId here so that the SDK has it if Android restarts your
+	    // app midway through the payment UI flow.
+	    intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, "credential-from-developer.paypal.com");
+
+	    // Provide a payerId that uniquely identifies a user within the scope of your system,
+	    // such as an email address or user ID.
+	    intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, "jagdeep.nagpal@gmail.com>");
+
+	    intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, CONFIG_RECEIVER_EMAIL);
+	    intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+	    startActivityForResult(intent, 0);
 	}
 	
 	@Override
-	protected void onResume() {
-		super.onResume();
-	    checkPlayServices();
+	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+	    if (resultCode == Activity.RESULT_OK) {
+	        PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+	        if (confirm != null) {
+	            try {
+	                Log.i("paymentExample", confirm.toJSONObject().toString(4));
+
+	                // TODO: send 'confirm' to your server for verification.
+	                // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+	                // for more details.
+
+	            } catch (JSONException e) {
+	                Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+	            }
+	        }
+	    }
+	    else if (resultCode == Activity.RESULT_CANCELED) {
+	        Log.i("paymentExample", "The user canceled.");
+	    }
+	    else if (resultCode == PaymentActivity.RESULT_PAYMENT_INVALID) {
+	        Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
+	    }
+	}
+	
+	@Override
+	protected void onDestroy() {
+	    stopService(new Intent(this, PayPalService.class));
+	    super.onDestroy();
 	}
 
 }
