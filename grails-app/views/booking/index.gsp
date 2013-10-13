@@ -24,17 +24,17 @@
 			<thead>
 					<tr>
 					
-						<th><g:message code="booking.source.label" default="Source" /></th>
+						<g:sortableColumn property="sourceAddress" title="${message(code: 'booking.sourceAddress.label', default: 'Source Address')}" />
 					
-						<th><g:message code="booking.destination.label" default="Destination" /></th>
+						<g:sortableColumn property="destinationAddress" title="${message(code: 'booking.destinationAddress.label', default: 'Destination Address')}" />
+					
+						<g:sortableColumn property="clientName" title="${message(code: 'booking.clientName.label', default: 'Client Name')}" />
 					
 						<g:sortableColumn property="journeyTime" title="${message(code: 'booking.journeyTime.label', default: 'Journey Time')}" />
 					
 						<g:sortableColumn property="createdTime" title="${message(code: 'booking.createdTime.label', default: 'Created Time')}" />
 					
-						<th><g:message code="booking.client.label" default="Client" /></th>
-					
-						<th><g:message code="booking.company.label" default="Company" /></th>
+						<g:sortableColumn property="isConfirmed" title="${message(code: 'booking.isConfirmed.label', default: 'Is Confirmed')}" />
 					
 					</tr>
 				</thead>
@@ -42,17 +42,17 @@
 				<g:each in="${bookingInstanceList}" status="i" var="bookingInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${bookingInstance.id}">${fieldValue(bean: bookingInstance, field: "source")}</g:link></td>
+						<td><g:link action="show" id="${bookingInstance.id}">${fieldValue(bean: bookingInstance, field: "sourceAddress")}</g:link></td>
 					
-						<td>${fieldValue(bean: bookingInstance, field: "destination")}</td>
+						<td>${fieldValue(bean: bookingInstance, field: "destinationAddress")}</td>
+					
+						<td>${fieldValue(bean: bookingInstance, field: "clientName")}</td>
 					
 						<td><g:formatDate date="${bookingInstance.journeyTime}" /></td>
 					
 						<td><g:formatDate date="${bookingInstance.createdTime}" /></td>
 					
-						<td>${fieldValue(bean: bookingInstance, field: "client")}</td>
-					
-						<td>${fieldValue(bean: bookingInstance, field: "company")}</td>
+						<td><g:formatBoolean boolean="${bookingInstance.isConfirmed}" /></td>
 					
 					</tr>
 				</g:each>

@@ -2,24 +2,33 @@ package cabpal
 
 class Booking {
 
-    Address source
-    Address destination
+    String sourceAddress
+    String destinationAddress
+
+    String phone
+    String clientName
+
     Date journeyTime = new Date()
     Date createdTime = new Date()
-    static belongsTo = [company: Company, client: Client]
+
+    static belongsTo = [company: Company]
 
     boolean isConfirmed = false
-    Date estimatedTime = null
-    Currency cost = null
+    int estimatedTime = 0
+    int cost = 0
 
+    boolean isComplete = false
 
     static constraints = {
-        source nullable: false, unique: false, blank: false
-        destination nullable: true, unique: false, blank: true
+        sourceAddress nullable: false, unique: false, blank: false
+        destinationAddress nullable: true, unique: false, blank: true
+        clientName nullable: false, unique: false, blank: false
         journeyTime nullable: false, unique: false, blank: false
         createdTime nullable: false, unique: false, blank: false
         isConfirmed nullable: false, unique: false, blank: false
         estimatedTime nullable: true,   unique: false, blank: false
         cost nullable: true, unique: false, blank: false
+        isComplete nullable: false, unique: false, blank:false
+        phone nullable: false, unique: false, blank:false, matches: "[0-9]*"
     }
 }

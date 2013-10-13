@@ -41,20 +41,22 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${companyInstance?.address}">
-				<li class="fieldcontain">
-					<span id="address-label" class="property-label"><g:message code="company.address.label" default="Address" /></span>
-					
-						<span class="property-value" aria-labelledby="address-label"><g:link controller="address" action="show" id="${companyInstance?.address?.id}">${companyInstance?.address?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${companyInstance?.email}">
 				<li class="fieldcontain">
 					<span id="email-label" class="property-label"><g:message code="company.email.label" default="Email" /></span>
 					
 						<span class="property-value" aria-labelledby="email-label"><g:fieldValue bean="${companyInstance}" field="email"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${companyInstance?.bookings}">
+				<li class="fieldcontain">
+					<span id="bookings-label" class="property-label"><g:message code="company.bookings.label" default="Bookings" /></span>
+					
+						<g:each in="${companyInstance.bookings}" var="b">
+						<span class="property-value" aria-labelledby="bookings-label"><g:link controller="booking" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></span>
+						</g:each>
 					
 				</li>
 				</g:if>
